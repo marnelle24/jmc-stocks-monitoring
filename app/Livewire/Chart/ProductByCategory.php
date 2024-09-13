@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\Category;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
 
-class CategoryColumnChart extends Component
+class ProductByCategory extends Component
 {
     public $colors = ['#f6ad55','#fc8181','#90cdf4','#66DA26','#cbd5e0'];
 
@@ -36,7 +36,7 @@ class CategoryColumnChart extends Component
 
     public function render()
     {
-        return view('livewire.chart.category-column-chart', [
+        return view('livewire.chart.product-by-category', [
             'chart' => $this->chartDetails()
         ]);
     }

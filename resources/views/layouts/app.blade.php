@@ -43,7 +43,6 @@
 
         @livewireScripts
         @livewireChartsScripts
-
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 Livewire.on('errorLabel', event => {
