@@ -5,19 +5,18 @@
         wire:model.live.debounce.500ms="search" 
         wire:keydown.enter="performSearch"
         type="search" 
-        class="w-full px-3 py-5 text-lg shadow-lg" 
-        placeholder="Find Products.." 
+        class="w-full px-3 py-5 text-lg shadow-lg rounded-md placeholder:text-gray-500/60" 
+        placeholder="Search Product by Name, Supplier, Keywords or Category......" 
     />
     <br />
     <br />
     <p class="italic text-gray-600 mt-6 mb-3">
         {{$label}}
     </p>
-        {{-- @dd($products) --}}
-        @if (count($products))
+        @if (count($this->products))
         <div class="grid xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 grid-cols-1 gap-8">
-            @foreach ($products as $product)
-                <div wire:key="{{$product->id}}" class="bg-gray-100 overflow-hidden shadow-xl transform hover:-translate-y-1 duration-300">
+            @foreach ($this->products as $product)
+                <div wire:key="{{$product->id}}" class="bg-gray-100 rounded-xl overflow-hidden shadow-xl transform hover:-translate-y-1 duration-300">
                     <div class="bg-[#DDD] border-b border-b-gray-200 border-t border-t-gray-100">
                         @php
                             $_name = explode(' ', $product->name);
@@ -90,9 +89,9 @@
         @else
             <p class="text-center text-3xl italic text-gray-400">No product found.</p>
         @endif
-    @if (count($products))
+    @if (count($this->products))
         <div class="p-3 mt-10">
-            {!! $products->links('vendor.livewire.custom-pagination') !!}
+            {!! $this->products->links('vendor.livewire.custom-pagination') !!}
         </div>
     @endif
 
