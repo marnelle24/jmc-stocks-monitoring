@@ -2,23 +2,34 @@
 
 namespace App\Livewire\Chart;
 
+use App\Models\Keyword;
 use Livewire\Component;
 use Asantibanez\LivewireCharts\Models\PieChartModel;
 
 class PieChart extends Component
 {
+    public $colors = ['#f6ad55','#fc8181','#90cdf4','#66DA26','#cbd5e0'];
+    public $number = 4;
+
     public function chartDetails()
     {
-        // Build the pie chart model
-        return (new PieChartModel())
-            ->setAnimated(true) // Enables animation
-            ->addSlice('Kabilya', 45, '#cbd5e0')  // Add a slice (label, value, color)
-            ->addSlice('GI', 25, '#fc8181')
-            ->addSlice('Cement', 30, '#90cdf4')
-            ->addSlice('Wooden Tiles', 20, '#f6ad55')
-            ->addSlice('Plant Pot', 16, '#66DA26')
-            ->setLegendVisibility(true) // Show the legend
-            ->setDataLabelsEnabled(true); // Show data labels on the slices
+        $topKeywords = Keyword::orderBy('count', 'DESC')
+            ->take($this->number)
+            ->get();
+
+        $pieChart = (new PieChartModel());
+        $pieChart->setAnimated(true); // Enables animation
+        $pieChart->setLegendVisibility(true); // Show the legend
+        $pieChart->setDataLabelsEnabled(true); // Show data labels on the slices
+
+        foreach ($topKeywords as $value) 
+        {
+            $_color = array_rand($this->colors);
+            $value->keyword = ucfirst($value->keyword);
+            $pieChart->addSlice($value->keyword, $value->count, $this->colors[$_color]);
+        }
+
+        return $pieChart;
     }
     
     public function render()

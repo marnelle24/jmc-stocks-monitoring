@@ -26,6 +26,7 @@ class ProductByCategory extends Component
         foreach ($categories as $key => $category) 
         {
             $_color = array_rand($this->colors);
+            $category->name = ucfirst($category->name);
             if($category->products_count > 0)
                 $columnChartModel->addColumn($category->name, $category->products_count, $this->colors[$_color]);
         }

@@ -40,7 +40,7 @@
                 <div>
                     <div class="bg-gray-50 overflow-hidden shadow-md sm:rounded-lg mb-8">
                         <div class="p-4 border-b border-gray-200 bg-white">
-                            <p class="font-bold text-lg">Top Keywords Search</p>
+                            <p class="font-bold text-lg">Top Search Keywords</p>
                         </div>
                         <div class="bg-gray-50 bg-opacity-25">
                             @livewire('chart.pie-chart')
