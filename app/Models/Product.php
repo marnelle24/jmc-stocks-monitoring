@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Sales;
 use App\Models\Supplier;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -59,6 +60,11 @@ class Product extends Model
     public function supplier(): BelongsTo
     {
         return $this->belongsTo(Supplier::class);
+    }
+
+    public function sales()
+    {
+        return $this->hasMany(Sales::class);
     }
 
 
