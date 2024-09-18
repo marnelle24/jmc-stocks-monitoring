@@ -2,31 +2,43 @@
 
 namespace App\Livewire\Chart;
 
+use App\Models\Sales;
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
 use Asantibanez\LivewireCharts\Models\LineChartModel;
 
 class LineChart extends Component
 {
     public function chartSetup()
     {
+        $months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
+        $salesData = Sales::select(
+            DB::raw('YEAR(sale_date) as year'), 
+            DB::raw('MONTH(sale_date) as month'),
+            DB::raw('SUM(total) as total_sales') 
+        )
+        ->groupBy('year', 'month')
+        ->orderBy('year', 'desc')
+        ->orderBy('month', 'asc')
+        ->get();
+
         $lineChart = (new LineChartModel());
         $lineChart->setAnimated(true);
-        $lineChart->addPoint('Jan', 150);
-        $lineChart->addPoint('Feb', 450);
-        $lineChart->addPoint('Mar', 600);
-        $lineChart->addPoint('Apr', 900);
-        $lineChart->addPoint('May', 800);
-        $lineChart->addPoint('June', 500);
-        $lineChart->addPoint('July', 400);
-        $lineChart->addPoint('Aug',500);
-        $lineChart->addPoint('Sept', 500);
-        $lineChart->addPoint('Oct', 1000);
-        $lineChart->addPoint('Nov', 700);
-        $lineChart->addPoint('Dec', 1800);
         $lineChart->setColors(['#90cdf4']);
         $lineChart->setXAxisVisible(true);
         $lineChart->setYAxisVisible(true);
 
+        $val = 0;
+        foreach ($months as $month)
+        {
+            foreach($salesData as $sale)
+            {
+                if($month == $months[$sale->month]) 
+                    $val = $sale->total_sales;
+            }
+            $lineChart->addPoint($month, $val);
+        }
         return $lineChart;
     }
     
