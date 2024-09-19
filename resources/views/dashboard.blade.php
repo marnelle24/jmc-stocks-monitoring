@@ -30,7 +30,7 @@
                 <div class="col-span-2">
                     <div class="bg-gray-50 overflow-hidden shadow-md sm:rounded-lg">
                         <div class="p-4 border-b border-gray-200 bg-white">
-                            <p class="font-bold text-lg">Monthly Sales By Product</p>
+                            <p class="font-bold text-lg">Monthly Sales</p>
                         </div>
                         <div class="bg-gray-50 bg-opacity-25 p-6">
                             @livewire('chart.line-chart')
