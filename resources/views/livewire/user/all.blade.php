@@ -20,7 +20,7 @@
                         @if (count($user->roles))
                             @foreach ($user->roles as $role)
                                 <span
-                                    class="{{ $role->name === 'admin' ? 'bg-green-600' : ($role->name === 'administrator' ? 'bg-red-600' : 'bg-yellow-600') }} text-md rounded-full px-2.5 py-1 drop-shadow text-sm capitalize text-white text-left">
+                                    class="{{ $role->name === 'admin' ? 'bg-green-600' : ($role->name === 'administrator' ? 'bg-red-600' : 'bg-yellow-600') }} text-md rounded-full px-2.5 m-0.5 py-1 drop-shadow text-sm capitalize text-white text-left">
                                     {{$role->name}}
                                 </span>
                             @endforeach

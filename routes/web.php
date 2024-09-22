@@ -58,6 +58,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
         return view('user.index');
     })->name('users');
 
+    Route::get('/user/add', function () {
+        if(auth()->user()->can('create'))
+            return view('user.add');
+        else
+            return redirect('dashboard');
+    })->name('user.add');
+
 
 
 });
