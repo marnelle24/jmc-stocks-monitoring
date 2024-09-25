@@ -11,8 +11,10 @@ use Spatie\Permission\Models\Permission;
 
 class RoleAndPermissions extends Component
 {
+    public $userRole = [];
     public $selectedRole;
-    public $user;
+    public $viewRole;
+    public $usr;
     public $uname;
     public $role_permissions;
     public $allRoles = [];
@@ -31,17 +33,36 @@ class RoleAndPermissions extends Component
 
     public function show($user)
     {
+
+        $this->usr = $user;
+        $this->userRole = Collect($user['roles'])->pluck('name')->toArray();
+        $this->uname = $user['name'];
+        
+        $this->allPermissions = Permission::all();
+
+        $this->viewRolePermissions();
+
         $this->resetErrorBag();
         $this->resetValidation();
-        $this->getAllPermissions();
         $this->getAllRoles();
-
-        $this->user = User::find($user['id']);
-        $this->uname = $this->user->name;
-        $this->selectedRole = $this->user->roles[0]->id;
-        $this->updatedSelectedRole();
+        // $this->updatedSelectedRole();
         
         $this->isOpen = true;
+    }
+
+    public function removeRole($role)
+    {
+        $user = User::find($this->usr['id']);
+        $user->removeRole($role);
+
+        $this->viewRolePermissions();
+
+        $this->userRole = $user->roles->pluck('name')->toArray();
+
+        if(!$user->hasRole($role))
+            $this->dispatch('successLabel', message: 'New role succssfully created.');
+        else
+            $this->dispatch('errorLabel', message: 'Error removing the permission.');
     }
 
     public function addNewRole()
@@ -61,20 +82,16 @@ class RoleAndPermissions extends Component
         $this->isCreateNewRole = !$this->isCreateNewRole;
     }
 
-    public function changeUserRole()
+    public function addUserRole()
     {
+        if(! $this->selectedRole) return;
+
         $role = Role::find($this->selectedRole);
-
-        //Dont execute if no changes
-        if($role->name === $this->user->roles[0]->name) return;
-        
-        $this->user->syncRoles($role->name);
+        $user = User::find($this->usr['id']);
+        $user->assignRole($role->name);
+        $this->userRole[] = $role->name;
+        $this->viewRolePermissions();
         $this->dispatch('successLabel', message: 'New role succssfully assign to user.');
-    }
-
-    public function getAllPermissions()
-    {
-        $this->allPermissions = Permission::all();
     }
 
     public function getAllRoles()
@@ -101,6 +118,14 @@ class RoleAndPermissions extends Component
         $this->dispatch('successLabel', message: 'New permission added successfully.');
     }
 
+    public function assignPermissionToUser($permission)
+    {
+        $_perm = json_decode($permission, true);
+        $user = User::find($this->usr['id']);
+        $user->givePermissionTo($_perm['name']);
+        $this->dispatch('successLabel', message: 'New permission added to a user successfully.');
+    }
+
     public function assignPermissionToRole($permission)
     {
         $role = Role::find($this->selectedRole);
@@ -114,15 +139,37 @@ class RoleAndPermissions extends Component
         $this->dispatch('successLabel', message: 'Roles & permissions updated successfully.');
     }
 
-    public function updatedSelectedRole()
-    {   
-        $role = Role::find($this->selectedRole);
-        $this->role_permissions = $role ? $role->permissions->pluck('name', 'id')->toArray() : [];
-    }    
+    public function viewRolePermissions()
+    {
+        $user = User::find($this->usr['id']);
+
+        // Step 1: Get all permissions that come from the user's roles
+        $rolePermissions = $user->roles->map(function ($role) {
+            return $role->permissions->pluck('name');
+        })->flatten()->unique();
+
+        // Step 2: Get all permissions that are directly assigned to the user
+        $directPermissions = $user->permissions->pluck('name');
+
+        // Step 3: Find permissions that are directly assigned and not in the roles
+        $permissionsNotInRoles = $directPermissions->diff($rolePermissions);
+
+        // Step 4: Merge the role permissions with the direct (non-role) permissions
+        $allPermissions = $rolePermissions->merge($permissionsNotInRoles);
+
+        // Return the final merged permissions array
+        $permissionsArray = $allPermissions->toArray();
+
+        $this->role_permissions = $permissionsArray;
+    }
 
 
     public function hide()
     {
+        $this->allPermissions = [];
+        $this->usr = [];
+        $this->resetErrorBag();
+        $this->resetValidation();
         $this->isOpen = false;
     }
 
