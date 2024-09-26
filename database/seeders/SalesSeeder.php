@@ -27,19 +27,15 @@ class SalesSeeder extends Seeder
         }
 
         // Seed 50 sales records
-        for ($i = 0; $i < 50; $i++) 
+        for ($i = 0; $i < 30; $i++) 
         {
             $product = $products->random();
 
             Sales::create([
+                'sales_order_no'  => $faker->unique()->numerify('SO####'),
                 'customer_name'   => $faker->name,
-                'product_id'      => $product->id,
-                'quantity'        => $faker->numberBetween(1, 50),
-                'price'           => $product->selling_price,
-                'total'           => $faker->numberBetween(50, 500),
+                'total_amount'    => $faker->numberBetween(250, 5000),
                 'sale_date'       => $faker->dateTimeThisYear(),
-                'payment_method'  => $faker->randomElement(['cash', 'credit_card', 'paypal']),
-                'status'          => $faker->randomElement(['pending', 'completed', 'refunded']),
             ]);
         }
     }

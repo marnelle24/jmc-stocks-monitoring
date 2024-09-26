@@ -13,18 +13,19 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
+            $table->string('sales_order_no')->unique();
             $table->string('customer_name')->nullable();
-            $table->unsignedBigInteger('product_id');
-            $table->integer('quantity');
-            $table->decimal('price', 10, 2);
-            $table->decimal('total', 10, 2);
+            $table->decimal('total_discount', 10, 2)->default(0);
+            $table->decimal('total_amount', 10, 2);
             $table->timestamp('sale_date');
-            $table->string('payment_method');
-            $table->enum('status', ['pending', 'completed', 'refunded'])->default('pending');
+            $table->string('payment_method')->default('cash');
+            $table->enum('status', ['pending', 'completed', 'refunded'])->default('completed');
+            $table->string('created_by')->nullable();
+            $table->string('approved_buy')->nullable();
             $table->timestamps();
 
             // Foreign key constraint
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            // $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
 
         });
     }
