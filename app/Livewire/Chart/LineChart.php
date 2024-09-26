@@ -14,15 +14,16 @@ class LineChart extends Component
         $months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
         $salesData = Sales::select(
-            DB::raw('YEAR(sale_date) as year'), 
-            DB::raw('MONTH(sale_date) as month'),
-            DB::raw('SUM(total) as total_sales') 
-        )
-        ->groupBy('year', 'month')
-        ->orderBy('year', 'desc')
-        ->orderBy('month', 'asc')
-        ->get();
-
+                DB::raw('YEAR(sale_date) as year'),  // Extract year from sale_date
+                DB::raw('MONTH(sale_date) as month'),  // Extract month from sale_date
+                DB::raw('COUNT(sales.id) as total_sales'),  // Total sales count
+                DB::raw('SUM(sales_items.quantity * sales_items.sellingPrice) as total_revenue')  // Sum of total revenue
+            )
+            ->join('sales_items', 'sales_items.id', '=', 'sales_items.sale_id')  // Join with sales_order_items
+            ->groupBy(DB::raw('YEAR(sale_date), MONTH(sale_date)'))  // Group by year and month
+            ->orderBy(DB::raw('YEAR(sale_date), MONTH(sale_date)'))  // Order by year and month
+            ->get();
+        
         $lineChart = (new LineChartModel());
         $lineChart->setAnimated(true);
         $lineChart->setColors(['#90cdf4']);
@@ -35,7 +36,7 @@ class LineChart extends Component
             foreach($salesData as $sale)
             {
                 if($month == $months[$sale->month]) 
-                    $val = $sale->total_sales;
+                    $val = $sale->total_revenue;
             }
             $lineChart->addPoint($month, $val);
         }
