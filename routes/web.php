@@ -65,6 +65,18 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
             return redirect('dashboard');
     })->name('user.add');
 
+    Route::get('/sales', function () {
+        return view('sales.index');
+    })->name('sales');
 
+    Route::get('/sales/new', function () {
+        return view('sales.add');
+    })->name('sales.add');
+
+    Route::get('/sale/{sales_order_no}', function ($sales_order_no) {
+        return view('sales.single', [
+            'sales_order_no' => $sales_order_no
+        ]);
+    })->name('sales.single');
 
 });
