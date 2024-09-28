@@ -2,10 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Sales;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SalesItem extends Model
 {
     use HasFactory;
+
+    public function sale()
+    {
+        return $this->belongsTo(Sales::class, 'sale_id');
+    }
 }
