@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Sales;
 use App\Models\Supplier;
+use App\Models\SalesItem;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
@@ -62,11 +62,10 @@ class Product extends Model
         return $this->belongsTo(Supplier::class);
     }
 
-    public function sales()
+    public function salesItem()
     {
-        return $this->hasMany(Sales::class);
+        return $this->hasMany(SalesItem::class);
     }
-
 
 
 }

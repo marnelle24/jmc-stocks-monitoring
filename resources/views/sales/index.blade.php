@@ -8,20 +8,6 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-2 mb-8 gap-8 xl:px-0 sm:px-4">
-                <div class="bg-white overflow-hidden shadow-md sm:rounded-lg p-3 lg:p-5 border-b border-gray-200">
-                    test 1
-                </div>
-                <div class="bg-white overflow-hidden shadow-md sm:rounded-lg p-3 lg:p-5 border-b border-gray-200">
-                    test 2
-                </div>
-                <div class="bg-white overflow-hidden shadow-md sm:rounded-lg p-3 lg:p-5 border-b border-gray-200">
-                    test 3
-                </div>
-                <div class="bg-white overflow-hidden shadow-md sm:rounded-lg p-3 lg:p-5 border-b border-gray-200">
-                    test 4
-                </div>
-            </div>
             <div class="bg-white overflow-hidden mb-1">
                 <div class="p-3 bg-white border-b border-gray-200">
                     <div class="flex justify-between items-center">
@@ -38,20 +24,6 @@
                         </div>
                     </div>
                 </div>
-                {{-- <div class="p-3 lg:p-5 bg-white border-b border-gray-200">
-                    <div class="flex justify-between">
-                        <div class="w-1/4">
-                            @livewire('search-input')
-                        </div>
-                        @can('create')
-                            @livewire('supplier.supplier-modal')
-                        @endcan
-                    </div>
-                </div>
-
-                <div class="bg-gray-200 bg-opacity-25 w-full">
-                    @livewire('supplier.all')
-                </div> --}}
             </div>
 
             @livewire('sales.all')

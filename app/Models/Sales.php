@@ -22,11 +22,6 @@ class Sales extends Model
         'status',
     ];
 
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
-    }
-
     public function salesItem()
     {
         return $this->hasMany(SalesItem::class, 'sale_id');
