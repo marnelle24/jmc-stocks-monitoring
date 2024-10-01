@@ -99,10 +99,11 @@
                             {{ __('Reset') }}
                         </x-button>
                     </div>
-                    <x-button type="button" class="bg-sky-500 transform rounded-none duration-300 hover:bg-sky-600 focus:bg-sky-700 hover:-translate-y-1 text-white p-4">
+                    <x-button wire:click="$dispatch('openAddUpdateSalesItem')" type="button" class="bg-sky-500 transform rounded-none duration-300 hover:bg-sky-600 focus:bg-sky-700 hover:-translate-y-1 text-white p-4">
                         {{ __('Add Product Item') }}
                     </x-button>
                 </div>    
+                @livewire('sales.add-update-item')
             </div>
         </div>
     </form>
