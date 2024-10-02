@@ -76,13 +76,35 @@
                                 <td class="p-4 border-y text-sm border-gray-300 font-bold">Profit/Product</td>
                                 <td class="p-4 border-y text-sm border-gray-300 font-bold">Tax Amnt</td>
                                 <td class="p-4 border-y text-sm border-gray-300 font-bold">Net Profit</td>
+                                <td class="p-4 border-y text-sm border-gray-300 font-bold">&nbsp;</td>
                             </tr>
                         </thead>
-                        <tr>
-                            <td class="p-4 text-sm border-y duration-300 text-center" colspan="8">
-                                <p class="italic">Add product(s) to sales transaction</p>
-                            </td>
-                        </tr>
+                        @foreach ($salesItems as $item)
+                            <tr>
+                                <td class="p-4 text-sm border-y duration-300 text-left">{{$item['name']}}</td>
+                                <td class="p-4 text-sm border-y duration-300 text-left">{{$item['productCode']}}</td>
+                                <td class="p-4 text-sm border-y duration-300 text-left">1</td>
+                                <td class="p-4 text-sm border-y duration-300 text-left">{{ '₱'.number_format($item['buying_price'], 2) }}</td>
+                                <td class="p-4 text-sm border-y duration-300 text-left">{{ '₱'.number_format($item['selling_price'], 2) }}</td>
+                                <td class="p-4 text-sm border-y duration-300 text-left">{{ '₱'.number_format(1000, 2) }}</td>
+                                <td class="p-4 text-sm border-y duration-300 text-left">{{ '₱'.number_format(50, 2) }}</td>
+                                <td class="p-4 text-sm border-y duration-300 text-left">{{ '₱'.number_format(3500, 2) }}</td>
+                                <td class="p-4 text-sm border-y duration-300 text-right">
+                                    <button wire:click="removeItem({{$item['id']}})" type="button" class="hover:-translate-y-0.5 text-red-400 hover:text-red-600 font-bold duration-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
+                        @if (count($salesItems) == 0)
+                            <tr>
+                                <td class="p-4 text-sm border-y duration-300 text-center" colspan="9">
+                                    <p class="italic">Add product(s) to sales transaction</p>
+                                </td>
+                            </tr>
+                        @endif
                     </table>
                 </div>
             </div>
