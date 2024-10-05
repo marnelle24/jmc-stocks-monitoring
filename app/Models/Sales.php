@@ -20,6 +20,7 @@ class Sales extends Model
         'sale_date',
         'payment_method',
         'status',
+        'remarks'
     ];
 
     public function salesItem()

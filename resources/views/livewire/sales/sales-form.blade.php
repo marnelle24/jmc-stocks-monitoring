@@ -6,22 +6,26 @@
                     <div class="w-3/4 flex flex-col gap-6">
                         <div>
                             <span class="uppercase font-thin text-xs text-gray-500">Sales Order No. (optional)</span>
-                            <x-input placeholder="Auto-generated if not specified" class="disabled:bg-gray-100 rounded-none w-full" />
+                            <x-input wire:model="form.sales_order_no" placeholder="Auto-generated if not specified" class="disabled:bg-gray-100 rounded-none w-full" />
                         </div>
                         <div>
                             <span class="uppercase font-thin text-xs text-gray-500">Customer Name</span>
-                            <x-input placeholder="Customer Name" class="rounded-none capitalize w-full" />
+                            <x-input wire:model="form.customer_name" placeholder="Customer Name" class="rounded-none capitalize w-full" />
                         </div>
 
                         <div class="flex w-full gap-8">
                             <div class="w-1/2">
                                 <span class="uppercase font-thin text-xs text-gray-500">Total Amount</span>
-                                <x-input type="text" placeholder="PHP0.00" class="capitalize w-full" />
+                                <x-input wire:model="form.total_amount" type="text" placeholder="PHP0.00" class="capitalize w-full" />
                             </div>
                             <div class="w-1/2">
                                 <span class="uppercase font-thin text-xs text-gray-500">Discount Given {Optional)</span>
-                                <x-input type="number" step="0.01" placeholder="PHP0.00" class="capitalize w-full" />
+                                <x-input wire:model="form.total_discount" type="number" step="0.01" placeholder="PHP0.00" class="capitalize w-full" />
                             </div>
+                        </div>
+                        <div class="w-full">
+                            <span class="uppercase font-thin text-xs text-gray-500">Remarks</span>
+                            <textarea wire:model="form.remarks" class="w-full border-gray-300 focus:ring-0" rows="6" placeholder="Remarks (DR Number, notes, etc.)"></textarea>
                         </div>
                     </div>
 
@@ -29,11 +33,11 @@
                     <div class="w-1/4 flex flex-col gap-6">
                         <div>
                             <span class="uppercase font-thin text-xs text-gray-500">Transaction Date</span>
-                            <x-input type="date" placeholder="Auto-generated" class="disabled:bg-gray-100 rounded-none capitalize w-full" />
+                            <x-input wire:model="form.sale_date" type="date" placeholder="Auto-generated" class="disabled:bg-gray-100 rounded-none capitalize w-full" />
                         </div>   
                         <div>
                             <span class="uppercase font-thin text-xs text-gray-500">Payment Method</span>
-                            <select class="border-gray-300 rounded-none capitalize w-full">
+                            <select wire:model="form.payment_method" class="border-gray-300 rounded-none capitalize w-full focus:ring-0">
                                 <option value="cash">Cash</option>
                                 <option value="gcash">GCash</option>
                                 <option value="check">Check</option>
@@ -41,7 +45,7 @@
                         </div>     
                         <div>
                             <span class="uppercase font-thin text-xs text-gray-500">Status</span>
-                            <select class="border-gray-300 rounded-none capitalize w-full">
+                            <select wire:model="form.status" class="border-gray-300 rounded-none capitalize w-full focus:ring-0">
                                 <option value="pending">Pending</option>
                                 <option value="completed">Completed</option>
                                 <option value="refunded">Refund</option>
@@ -49,11 +53,11 @@
                         </div>
                         <div>
                             <span class="uppercase font-thin text-xs text-gray-500">Prepared By</span>
-                            <x-input type="text" placeholder="Name" class="disabled:bg-gray-100 rounded-none capitalize w-full" />
+                            <x-input wire:model="form.created_by" type="text" placeholder="Name" class="disabled:bg-gray-100 rounded-none capitalize w-full" />
                         </div>
                         <div>
                             <span class="uppercase font-thin text-xs text-gray-500">Approved By</span>
-                            <x-input type="text" placeholder="Name" class="disabled:bg-gray-100 rounded-none capitalize w-full" />
+                            <x-input wire:model="form.approved_by" type="text" placeholder="Name" class="disabled:bg-gray-100 rounded-none capitalize w-full" />
                         </div>                                   
                     </div>
                 </div>
@@ -76,19 +80,27 @@
                                 <td class="p-4 border-y text-sm border-gray-300 font-bold">Profit/Product</td>
                                 <td class="p-4 border-y text-sm border-gray-300 font-bold">Tax Amnt</td>
                                 <td class="p-4 border-y text-sm border-gray-300 font-bold">Net Profit</td>
-                                <td class="p-4 border-y text-sm border-gray-300 font-bold">&nbsp;</td>
+                                <td class="p-4 border-y text-sm border-gray-300 font-bold" width="4%">&nbsp;</td>
                             </tr>
                         </thead>
-                        @foreach ($salesItems as $item)
-                            <tr>
+                        @foreach ($salesItems as $key => $item)
+                            <tr wire:key="{{$key}}">
                                 <td class="p-4 text-sm border-y duration-300 text-left">{{$item['name']}}</td>
                                 <td class="p-4 text-sm border-y duration-300 text-left">{{$item['productCode']}}</td>
-                                <td class="p-4 text-sm border-y duration-300 text-left">1</td>
+                                <td class="p-4 text-sm border-y duration-300 text-left">
+                                    <input type="number" min="1" wire:model.live.debounce.500ms="salesItems.{{$key}}.quantity" class="border-x-0 border-t-0 border-b text-left border-gray-200 p-1 w-full" />
+                                </td>
                                 <td class="p-4 text-sm border-y duration-300 text-left">{{ '₱'.number_format($item['buying_price'], 2) }}</td>
-                                <td class="p-4 text-sm border-y duration-300 text-left">{{ '₱'.number_format($item['selling_price'], 2) }}</td>
-                                <td class="p-4 text-sm border-y duration-300 text-left">{{ '₱'.number_format(1000, 2) }}</td>
-                                <td class="p-4 text-sm border-y duration-300 text-left">{{ '₱'.number_format(50, 2) }}</td>
-                                <td class="p-4 text-sm border-y duration-300 text-left">{{ '₱'.number_format(3500, 2) }}</td>
+                                <td class="p-4 text-sm border-y duration-300 text-left flex items-baseline">
+                                    ₱<input type="number" min="1" step="0.01" placeholder="0.00" wire:model.live.debounce.500ms="salesItems.{{$key}}.selling_price" class="border-x-0 border-t-0 border-b text-left border-gray-200 p-1 w-full" />
+                                </td>
+                                <td class="p-4 text-sm border-y duration-300 text-left">
+                                    {{ '₱'.number_format(($item['profitPerProduct']), 2) }}
+                                </td>
+                                <td class="p-4 text-sm border-y duration-300 text-left flex items-baseline">
+                                    ₱<input type="number" min="0" step="0.01" min="1" placeholder="0.00" wire:model.live.debounce.500ms="salesItems.{{$key}}.taxAmount" class="border-x-0 border-t-0 border-b text-left border-gray-200 p-1 w-full" />
+                                </td>
+                                <td class="p-4 text-sm border-y duration-300 text-left">{{ '₱'.number_format($item['netProfit'], 2) }}</td>
                                 <td class="p-4 text-sm border-y duration-300 text-right">
                                     <button wire:click="removeItem({{$item['id']}})" type="button" class="hover:-translate-y-0.5 text-red-400 hover:text-red-600 font-bold duration-300">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
