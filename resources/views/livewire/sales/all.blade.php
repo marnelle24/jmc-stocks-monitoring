@@ -3,12 +3,12 @@
     <table class="w-full table-fixed">
         <thead>
             <tr>
-                <td class="p-4 border-y border-gray-300 bg-white font-bold" width="7%">SO#</td>
+                <td class="p-4 border-y border-gray-300 bg-white font-bold" width="10%">SO#</td>
                 <td class="p-4 border-y border-gray-300 bg-white font-bold">Trxn Date</td>
                 <td class="p-4 border-y border-gray-300 bg-white font-bold">Customer</td>
-                <td class="p-4 border-y border-gray-300 bg-white font-bold" width="8%">Amount</td>
-                <td class="p-4 border-y border-gray-300 bg-white font-bold" width="8%">Discount</td>
-                <td class="p-4 border-y border-gray-300 bg-white font-bold" width="8%">Profit</td>
+                <td class="p-4 border-y border-gray-300 bg-white font-bold" width="10%">Amount</td>
+                <td class="p-4 border-y border-gray-300 bg-white font-bold" width="10%">Discount</td>
+                <td class="p-4 border-y border-gray-300 bg-white font-bold" width="10%">Profit</td>
                 <td class="p-4 border-y border-gray-300 bg-white font-bold">Payment</td>
                 <td class="p-4 border-y border-gray-300 bg-white font-bold text-right">Status</td>
             </tr>

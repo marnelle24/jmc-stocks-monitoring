@@ -10,6 +10,18 @@ class SalesItem extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'sale_id',
+        'product_id',
+        'quantity',
+        'productCost',
+        'sellingPrice',
+        'profitPerProduct',
+        'tax_amount',
+        'totalProfit',
+        'status'   
+    ];
+
     public function sale()
     {
         return $this->belongsTo(Sales::class, 'sale_id');

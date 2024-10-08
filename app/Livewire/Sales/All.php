@@ -12,12 +12,26 @@ class All extends Component
 {
     use WithPagination;
 
+    public $search;
+
+    protected $listeners = [
+        'getSearchedKeyword' => 'loadSearchResult',
+    ];
+
+    public function loadSearchResult($value)
+    {
+        $this->search = $value;
+    }
+
+
     #[Computed]
     public function sales()
     {
-        $sales = Sales::with('salesItem')
-            ->latest()
+        $sales = Sales::latest('sale_date')
+            ->where('customer_name', 'like', "%{$this->search}%")
+            ->orWhere('sales_order_no', 'like', "%{$this->search}%")
             ->paginate(10);
+            
         return $sales;
     }
 

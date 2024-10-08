@@ -3,21 +3,12 @@
 namespace App\Livewire\Sales;
 
 use Livewire\Component;
+use App\Livewire\Forms\SalesOrderForm;
 
 class Create extends Component
 {
-    public $form = [
-        'sales_order_no' => '',
-        'customer_name'  => '',
-        'total_discount' => '',
-        'total_amount'   => '',
-        'sale_date'      => '',
-        'payment_method' => 'cash',
-        'status'         => 'refunded',
-        'created_by'     => '',
-        'approved_by'    => '',
-        'remarks'        => '',
-    ];
+    public SalesOrderForm $form;
+
     public $salesItems = [];
 
     protected $listeners = [
@@ -26,7 +17,8 @@ class Create extends Component
 
     public function mount()
     {
-        $this->form['created_by'] = auth()->user()->name;
+        $this->form->salesOrder['created_by'] = auth()->user()->name;
+        $this->form->salesOrder['sale_date'] = \Carbon\Carbon::now()->toDateString();
     }
 
     public function getProductItems($value)
@@ -54,9 +46,12 @@ class Create extends Component
         // $index is the index of the object in the loop
         // $field is the field being updated (e.g., 'quantity')
         $this->salesItems[$index][$field] = $value;
-
+        
+        // Recalculate the Profict/product once the sold price is changed.
+        $this->salesItems[$index]['profitPerProduct'] = floatval($this->salesItems[$index]['selling_price']) - floatval($this->salesItems[$index]['buying_price']);
+        
         // Recalculate the individual total for the updated object
-        $this->salesItems[$index]['netProfit'] = ($this->salesItems[$index]['quantity'] * $this->salesItems[$index]['selling_price']) - $this->salesItems[$index]['taxAmount'];
+        $this->salesItems[$index]['netProfit'] = (intval($this->salesItems[$index]['quantity']) * floatval($this->salesItems[$index]['selling_price'])) - floatval($this->salesItems[$index]['taxAmount']);
     }
 
     public function removeItem($id)
@@ -71,10 +66,11 @@ class Create extends Component
     }
 
 
-    public function save()
+    public function submit()
     {
-        $this->form['salesItems'] = $this->salesItems;
-        dump($this->form);
+        $this->form->salesOrder['salesItems'] = $this->salesItems;
+        // dump($this->form);
+        $this->form->save();
     }
 
     public function render()

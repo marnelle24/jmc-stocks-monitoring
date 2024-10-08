@@ -8,6 +8,21 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            @if (session()->has('message'))
+                <div 
+                    x-data="{ show: true }"
+                    x-init="setTimeout(() => show = false, 2500)" 
+                    x-show="show" 
+                    x-transition:enter="transition ease-out duration-500" 
+                    x-transition:enter-start="opacity-0" 
+                    x-transition:enter-end="opacity-100" 
+                    x-transition:leave="transition ease-in duration-500" 
+                    x-transition:leave-start="opacity-100" 
+                    x-transition:leave-end="opacity-0" 
+                    class="w-full bg-green-300/70 border rounded mb-4 border-green-500 text-green-700 p-4">
+                    {{ session('message') }}
+                </div>
+            @endif
             <div class="bg-white overflow-hidden mb-1">
                 <div class="p-3 bg-white border-b border-gray-200">
                     <div class="flex justify-between items-center">

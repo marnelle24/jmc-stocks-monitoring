@@ -14,7 +14,7 @@
                     <x-input wire:model.live.debounce.500ms="search" class="p-3 w-full bg-sky-50/40" type="search" placeholder="Search" />
                 </div>
                 @foreach ($this->products as $product)
-                    <p wire:key="{{$product->id}}" class="px-8 py-3 border-b flex gap-2 capitalize">
+                    <p wire:key="{{$product->id}}" class="hover:-translate-y-0.5 hover:bg-gray-100 hover:shadow-md duration-300 px-8 py-3 border-b flex gap-2 capitalize">
                         <button wire:click="addItem({{$product}})" type="button" class="hover:-translate-y-0.5 hover:text-blue-400 font-bold duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
